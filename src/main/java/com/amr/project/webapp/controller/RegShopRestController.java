@@ -38,24 +38,20 @@ public class RegShopRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/DelUser/{id}")
-    // метод удаления магазина юзером
-    public ResponseEntity<Void> DeleteShop(@PathVariable Long id) {
-        userService.deleteByIdCascadeEnable(id);
-        return new ResponseEntity(HttpStatus.OK);
+       @DeleteMapping("/pretendentDelShop")
+    // метод постановки магазина в очередь на удаление
+    public ResponseEntity<ShopDto> PretendentDelShop(@RequestBody ShopDto shop) {
+        shop.setPretendentToBeDeleted(true);
+        Shop shopPretDel = shopService.persist(shopMapper.toEntity(shop));
+        return ResponseEntity.ok(shopMapper.toDto(shopPretDel));
     }
+
 
     @GetMapping("/{id}")
     // получение магазина по id
     public ResponseEntity<ShopDto> getShopDtoById(@PathVariable Long id) {
         Shop shop = shopService.findById(id);
         return ResponseEntity.ok(shopMapper.toDto(shop));
-    }
-
-    @GetMapping
-    // получение всех зарегистрированных магазинов
-    public ResponseEntity<List<ShopDto>> getAllShop() {
-        return ResponseEntity.ok(shopMapper.toDtoList(shopService.findAll()));
     }
 
     @PutMapping
@@ -66,26 +62,23 @@ public class RegShopRestController {
         Shop shopUpdate = shopService.findById(shop.getId());
         return ResponseEntity.ok(shopMapper.toDto(shopUpdate));
     }
-    // получение списка отмодерированных магазинов
-    @GetMapping (path="/moderatedshops")
-    public ResponseEntity<List<ShopDto>> getallShopmoderated() {
-        List<ShopDto> allshops=shopMapper.toDtoList(shopService.findAll());
-        List<ShopDto> allmoderatedshops=new ArrayList<>();
-        for (ShopDto sh:allshops) {
-            if (sh.isModerated()) {allmoderatedshops.add(sh);}
-        }
-        return ResponseEntity.ok(allmoderatedshops);
-    }
-    // получение списка неотмодерированных магазинов
-    @GetMapping (path="/NOmoderatedshops")
-    public ResponseEntity<List<ShopDto>> getallShopNOmoderated() {
-        List<ShopDto> allshops=shopMapper.toDtoList(shopService.findAll());
-        List<ShopDto> allNOmoderatedshops=new ArrayList<>();
-        for (ShopDto sh:allshops) {
-            if (!sh.isModerated()) {allNOmoderatedshops.add(sh);}
-        }
-        return ResponseEntity.ok(allNOmoderatedshops);
+
+    @GetMapping
+    // получение всех зарегистрированных магазинов
+    public ResponseEntity<List<ShopDto>> getAllShop() {
+        return ResponseEntity.ok(shopMapper.toDtoList(shopService.findAll()));
     }
 
-
+    @GetMapping (path="/getListShop")
+    // получение cписка магазинов в зависимости от значения поля isModerated
+    public ResponseEntity<List<ShopDto>> getListShopbyisModerated(@PathVariable boolean isModerated) {
+        List<ShopDto> allshops = shopMapper.toDtoList(shopService.findAll());
+        List<ShopDto> allListshops = new ArrayList<>();
+        for (ShopDto sh : allshops) {
+            if (sh.isModerated()) {
+                allListshops.add(sh);
+            }
+        }
+        return ResponseEntity.ok(allListshops);
+    }
 }
