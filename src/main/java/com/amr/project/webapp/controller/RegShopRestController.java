@@ -38,11 +38,12 @@ public class RegShopRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-       @DeleteMapping("/pretendentDelShop")
-    // метод постановки магазина в очередь на удаление
-    public ResponseEntity<ShopDto> PretendentDelShop(@RequestBody ShopDto shop) {
+       @DeleteMapping("/pretend/{id}")
+    // метод постановки магазина в очередь на удаление.......................................
+    public ResponseEntity<ShopDto> PretendentDelShop(@PathVariable Long id) {
+        Shop shop = shopService.findById(id);
         shop.setPretendentToBeDeleted(true);
-        Shop shopPretDel = shopService.persist(shopMapper.toEntity(shop));
+        Shop shopPretDel = shopService.persist(shop);
         return ResponseEntity.ok(shopMapper.toDto(shopPretDel));
     }
 
@@ -70,12 +71,12 @@ public class RegShopRestController {
     }
 
     @GetMapping (path="/getListShop")
-    // получение cписка магазинов в зависимости от значения поля isModerated
+    // получение cписка магазинов в зависимости от значения поля isModerated..........................
     public ResponseEntity<List<ShopDto>> getListShopbyisModerated(@PathVariable boolean isModerated) {
         List<ShopDto> allshops = shopMapper.toDtoList(shopService.findAll());
         List<ShopDto> allListshops = new ArrayList<>();
         for (ShopDto sh : allshops) {
-            if (sh.isModerated()) {
+            if (sh.isModerated() == isModerated) {
                 allListshops.add(sh);
             }
         }
