@@ -21,7 +21,7 @@ public class City {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn (name = "country_id")
     private Country country;
 

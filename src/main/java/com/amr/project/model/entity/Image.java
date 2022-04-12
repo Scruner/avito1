@@ -18,7 +18,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
     private byte[] picture;
     private Boolean isMain = false;
 }
