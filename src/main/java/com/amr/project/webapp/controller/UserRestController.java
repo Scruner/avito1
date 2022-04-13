@@ -4,6 +4,7 @@ import com.amr.project.converter.ImageMapper;
 import com.amr.project.converter.UserMapper;
 import com.amr.project.model.dto.ImageDto;
 import com.amr.project.model.dto.UserDto;
+import com.amr.project.service.abstracts.MailService;
 import com.amr.project.service.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserRestController {
 
     private UserService userService;
+    private MailService mailService;
     private UserMapper userMapper;
     private ImageMapper imageMapper;
 
@@ -23,6 +25,9 @@ public class UserRestController {
     public ResponseEntity<UserDto> changePassword(@RequestBody UserDto userDto) {
         if(userDto.getPassword() != null || !userDto.getPassword().equals("")) {
             userService.update(userMapper.toEntity(userDto));
+            mailService.sendEmail(userDto.getEmail(),
+                    "password notification",
+                    "your password has been changed");
             return ResponseEntity.ok(userDto);
         }
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);

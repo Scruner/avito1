@@ -1,17 +1,15 @@
 package com.amr.project.dao.impl;
 
 import com.amr.project.dao.abstracts.ReadWriteDao;
-
-import com.amr.project.model.entity.Order;
-
+import com.amr.project.exception.Util;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -27,6 +25,7 @@ public class ReadWriteDaoImpl<T, K> implements ReadWriteDao<T, K> {
                 .getGenericSuperclass())
                 .getActualTypeArguments()[0];
     }
+
 
     @Override
     public void persist(T entity) {
@@ -81,9 +80,10 @@ public class ReadWriteDaoImpl<T, K> implements ReadWriteDao<T, K> {
         query.setMaxResults(pageSize);
         List<T> pagesList = query.getResultList();
 
-        Query queryCount = em.createQuery("select count(u.id) from " + clazz.getName() + " u");
-        Long count = (Long) queryCount.getSingleResult();
-
-        return new PageImpl<>(pagesList, pageable, count);
+        TypedQuery<Long> queryCount = em.createQuery("select count(u.id) from " + clazz.getName() + " u", Long.class);
+        Long count = Util.handlerSingleResult(queryCount);
+        if(count != null) {
+            return new PageImpl<>(pagesList, pageable, count);
+        } else return null;
     }
 }
