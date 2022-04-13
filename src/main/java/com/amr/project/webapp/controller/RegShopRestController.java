@@ -3,6 +3,8 @@ package com.amr.project.webapp.controller;
 import com.amr.project.converter.ShopMapper;
 import com.amr.project.model.dto.ShopDto;
 import com.amr.project.model.entity.Shop;
+import com.amr.project.model.entity.User;
+import com.amr.project.model.enums.Role;
 import com.amr.project.service.abstracts.ShopService;
 import com.amr.project.service.abstracts.UserService;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,20 +34,22 @@ public class RegShopRestController {
         return ResponseEntity.ok(shopMapper.toDto(shopReg));
     }
 
-    @DeleteMapping("/UnReg/{id}")
-    // метод удаления магазина модератором из списка зарегистрированных
-    public ResponseEntity<Void> UnRegShop(@PathVariable Long id) {
-        shopService.deleteByIdCascadeEnable(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
        @DeleteMapping("/pretend/{id}")
     // метод постановки магазина в очередь на удаление.......................................
-    public ResponseEntity<ShopDto> PretendentDelShop(@PathVariable Long id) {
-        Shop shop = shopService.findById(id);
-        shop.setPretendentToBeDeleted(true);
-        Shop shopPretDel = shopService.persist(shop);
-        return ResponseEntity.ok(shopMapper.toDto(shopPretDel));
+    public ResponseEntity<ShopDto> deleteShop(@PathVariable Long id, Principal principal) {
+        User user = (User) principal;
+        if (user != null && user.getRole().equals(Role.ADMIN))  {
+            shopService.deleteByIdCascadeEnable(id);
+        }
+        else {
+            Shop shop = shopService.findById(id);
+            shop.setPretendentToBeDeleted(true);
+            shopService.persist(shop);
+
+        }
+           return ResponseEntity.ok().build();
+
     }
 
 
@@ -72,14 +77,13 @@ public class RegShopRestController {
 
     @GetMapping (path="/getListShop")
     // получение cписка магазинов в зависимости от значения поля isModerated..........................
-    public ResponseEntity<List<ShopDto>> getListShopbyisModerated(@PathVariable boolean isModerated) {
-        List<ShopDto> allshops = shopMapper.toDtoList(shopService.findAll());
-        List<ShopDto> allListshops = new ArrayList<>();
-        for (ShopDto sh : allshops) {
-            if (sh.isModerated() == isModerated) {
-                allListshops.add(sh);
-            }
+    public ResponseEntity<List<ShopDto>> getListShopbyisModerated(@RequestParam(required = false) Boolean isModerated) {
+        if (isModerated == null) {
+            return ResponseEntity.ok(shopMapper.toDtoList(shopService.findAll()));
+        } else if (Boolean.TRUE.equals(isModerated)) {
+            return ResponseEntity.ok(shopMapper.toDtoList(shopService.findAllModerated()));
+        } else {
+            return ResponseEntity.ok(shopMapper.toDtoList(shopService.findAllUnModerated()));
         }
-        return ResponseEntity.ok(allListshops);
     }
 }

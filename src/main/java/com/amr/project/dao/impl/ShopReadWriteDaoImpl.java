@@ -18,4 +18,16 @@ public class ShopReadWriteDaoImpl extends ReadWriteDaoImpl<Shop, Long> implement
         return em.createQuery("select i from Shop i where i.name = ?1", Shop.class)
                 .setParameter(1, name).getResultList();
     }
+
+    @Override
+    public List<Shop> findallModerated() {
+        return em.createQuery("select i from Shop i where i.isModerated = true", Shop.class)
+                .getResultList();
+    }
+
+    @Override
+    public List<Shop> findallUnModerated() {
+        return em.createQuery("select i from Shop i where i.isModerated = false", Shop.class)
+                .getResultList();
+    }
 }

@@ -28,4 +28,10 @@ public class ShopServiceImpl extends ReadWriteServiceImpl<Shop, Long> implements
     public List<Shop> getShopByFoundName(String name) {
         return dao.getShopByFoundName(name);
     }
+
+    @Override
+    public List<Shop> findAllModerated() {return dao.findallModerated();}
+
+    @Override
+    public List<Shop> findAllUnModerated() {return dao.findallUnModerated();}
 }
