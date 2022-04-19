@@ -8,4 +8,8 @@ public interface ShopService extends ReadWriteService<Shop, Long> {
     List<Shop> getMostPopularShops(int count);
 
     List<Shop> getShopByFoundName(String name);
+
+    List<Shop> findAllModerated();
+
+    List<Shop> findAllUnModerated();
 }
