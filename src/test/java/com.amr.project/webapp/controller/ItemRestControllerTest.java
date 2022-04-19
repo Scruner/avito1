@@ -1,4 +1,4 @@
-package java.com.amr.project.webapp.controller;
+package com.amr.project.webapp.controller;
 
 import com.amr.project.model.entity.Item;
 import com.amr.project.service.abstracts.ItemService;

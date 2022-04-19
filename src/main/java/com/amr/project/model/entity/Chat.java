@@ -19,7 +19,7 @@ public class Chat {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany (fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @ManyToMany (fetch = FetchType.LAZY, cascade =  {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "chat_members", joinColumns = @JoinColumn(name = "chat_id"), inverseJoinColumns
             = @JoinColumn(name = "members_id"))
     private List<User> members;
