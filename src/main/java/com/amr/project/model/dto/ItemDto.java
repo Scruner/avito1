@@ -18,8 +18,8 @@ public class ItemDto {
     private BigDecimal basePrice;
     private BigDecimal price;
     private Long categoryId;
-    private List<ImageDto> imagesDto;
-    private List<ReviewDto> reviewsDto;
+    private List<ImageDto> images;
+    private List<ReviewDto> reviews;
     private int count;
     private double rating;
     private String description;
