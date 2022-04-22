@@ -3,7 +3,7 @@ package com.amr.project.service.impl;
 import com.amr.project.model.entity.Order;
 import com.amr.project.model.enums.Status;
 import com.amr.project.service.abstracts.ItemService;
-import com.amr.project.service.abstracts.Mailer;
+import com.amr.project.service.abstracts.MailService;
 import com.amr.project.service.abstracts.OrderService;
 import com.amr.project.service.abstracts.PaymentService;
 import com.qiwi.billpayments.sdk.client.BillPaymentClient;
@@ -26,11 +26,11 @@ import java.util.Currency;
 public class PaymentServiceImpl implements PaymentService {
 
     private OrderService orderService;
-    private Mailer mailer;
+    private MailService mailer;
     private ItemService itemService;
 
 
-    public PaymentServiceImpl(OrderService orderService, Mailer mailer, ItemService itemService) {
+    public PaymentServiceImpl(OrderService orderService, MailService mailer, ItemService itemService) {
         this.orderService = orderService;
         this.mailer = mailer;
         this.itemService = itemService;
@@ -50,19 +50,19 @@ public class PaymentServiceImpl implements PaymentService {
             text = "Успешно оплачен заказ №" + billId + " на сумму: " + billTotal;
 
             //письмо покупателю
-            mailer.sendMail(buyerEmail, subject, text);
+            mailer.sendEmail(buyerEmail, subject, text);
 
             //письмо продавцу
-            mailer.sendMail(sellerEmail, subject, text);
+            mailer.sendEmail(sellerEmail, subject, text);
 
         } else if (response.getStatus().getValue().getValue().equals("REJECTED")) {
             text = "Отклонена оплата по заказу №" + billId + " на сумму: " + billTotal;
 
             //письмо покупателю
-            mailer.sendMail(buyerEmail, subject, text);
+            mailer.sendEmail(buyerEmail, subject, text);
 
             //письмо продавцу
-            mailer.sendMail(sellerEmail, subject, text);
+            mailer.sendEmail(sellerEmail, subject, text);
 
         }
     }

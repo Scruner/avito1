@@ -36,9 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
                 .and()
-                .logout()
-                .and()
-                .oauth2Login();
+                .logout();
+                /*.and()
+                .oauth2Login();*/
     }
 
     @Autowired

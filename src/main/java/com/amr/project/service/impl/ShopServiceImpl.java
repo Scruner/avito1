@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service("shopServiceImpl")
 public class ShopServiceImpl extends ReadWriteServiceImpl<Shop, Long> implements ShopService {
 
     public final ShopReadWriteDao dao;

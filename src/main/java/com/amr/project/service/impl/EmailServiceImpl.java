@@ -1,13 +1,14 @@
+/*
 package com.amr.project.service.impl;
 
-import com.amr.project.service.abstracts.EmailService;
+import com.amr.project.service.abstracts.MailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl implements MailService {
 
     private final JavaMailSender emailSender;
 
@@ -29,3 +30,4 @@ public class EmailServiceImpl implements EmailService {
         emailSender.send(mailMessage);
     }
 }
+*/

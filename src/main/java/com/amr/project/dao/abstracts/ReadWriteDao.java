@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ReadWriteDao<T, K> {
 
-    void persist(final T entity);
+    void persist(T entity);
 
     void update(final T entity);
 

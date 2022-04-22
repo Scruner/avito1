@@ -2,7 +2,7 @@ package com.amr.project.service.impl;
 
 import com.amr.project.model.entity.User;
 import com.amr.project.service.abstracts.EmailConfirmationService;
-import com.amr.project.service.abstracts.Mailer;
+import com.amr.project.service.abstracts.MailService;
 import com.amr.project.service.abstracts.UserService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,9 @@ public class EmailConfirmationServiceImpl implements EmailConfirmationService {
 
 
     UserService userService;
-    private Mailer mailer;
+    private MailService mailer;
 
-    public EmailConfirmationServiceImpl(UserService userService, Mailer mailer) {
+    public EmailConfirmationServiceImpl(UserService userService, MailService mailer) {
         this.userService = userService;
         this.mailer = mailer;
     }
@@ -39,7 +39,7 @@ public class EmailConfirmationServiceImpl implements EmailConfirmationService {
         //Формируем и отправляем письмо с кодом активации пользователю
         String subject = "Код активации для подтверждения электронной почты";
         String text = "Используйте данный код для подтверждения вашего email";
-        mailer.sendMail(email, subject, text);
+        mailer.sendEmail(email, subject, text);
     }
 
     @Override
