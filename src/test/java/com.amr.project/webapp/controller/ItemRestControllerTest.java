@@ -53,7 +53,7 @@ public class ItemRestControllerTest {
     void getItemDtoByIdTest() throws Exception {
         final Item item = new Item(1L, "name", new BigDecimal(100), new BigDecimal(50), 1L,
                 null, null, 10, 0.5, "description", 1,
-                null, false,"moderatedRejectReason", false);
+                null, false,"moderatedRejectReason", false, false);
 
         given(itemService.findById(item.getId())).willReturn(item);
 
@@ -68,7 +68,7 @@ public class ItemRestControllerTest {
     void createItemTest() throws Exception {
         final Item item = new Item(1L, "name", new BigDecimal(100), new BigDecimal(50), 1L,
                 null, null, 10, 0.5, "description", 1,
-                null, false,"moderatedRejectReason", false);
+                null, false,"moderatedRejectReason", false, false);
 
         given(itemService.persist(any(Item.class))).willAnswer((i) -> i.getArgument(0));
 

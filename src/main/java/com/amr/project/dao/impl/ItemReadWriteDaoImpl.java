@@ -4,7 +4,6 @@ import com.amr.project.dao.abstracts.ItemReadWriteDao;
 import com.amr.project.model.entity.Item;
 import com.amr.project.model.entity.Shop;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
@@ -26,5 +25,10 @@ public class ItemReadWriteDaoImpl extends ReadWriteDaoImpl<Item, Long> implement
                 .setParameter("s", shop)
                 .setMaxResults(5)
                 .getResultList();
+    }
+
+    @Override
+    public List<Item> findAllUnModerated() {
+        return em.createQuery("select i from Item i where i.isModerated = false").getResultList();
     }
 }

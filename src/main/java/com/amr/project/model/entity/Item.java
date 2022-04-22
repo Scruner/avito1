@@ -1,17 +1,6 @@
 package com.amr.project.model.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -44,11 +33,13 @@ public class Item {
     @JoinColumn (name = "shop_id")
     private Shop shop;
 
+    @Column(name = "is_moderated")
     private boolean isModerated = false;
+    private boolean isModerateAccept = false;
     private String moderatedRejectReason;
     private boolean isPretendedToBeDeleted;
 
-    public Item(Long id, String name, BigDecimal basePrice, BigDecimal price, Long categoryId, List<Image> images, List<Review> reviews, int count, double rating, String description, int discount, Shop shop, boolean isModerated, String moderatedRejectReason, boolean isPretendedToBeDeleted) {
+    public Item(Long id, String name, BigDecimal basePrice, BigDecimal price, Long categoryId, List<Image> images, List<Review> reviews, int count, double rating, String description, int discount, Shop shop, boolean isModerated, String moderatedRejectReason, boolean isPretendedToBeDeleted, boolean isModerateAccept) {
         this.id = id;
         this.name = name;
         this.basePrice = basePrice;
@@ -62,6 +53,7 @@ public class Item {
         this.discount = discount;
         this.shop = shop;
         this.isModerated = isModerated;
+        this.isModerateAccept = isModerateAccept;
         this.moderatedRejectReason = moderatedRejectReason;
         this.isPretendedToBeDeleted = isPretendedToBeDeleted;
     }
@@ -293,6 +285,7 @@ public class Item {
         private int discount;
         private Shop shop;
         private boolean isModerated;
+        private boolean isModerateAccept;
         private String moderatedRejectReason;
         private boolean isPretendedToBeDeleted;
 
@@ -374,8 +367,13 @@ public class Item {
             return this;
         }
 
+        public ItemBuilder isModerateAccept(boolean isModerateAccept) {
+            this.isModerateAccept = isModerateAccept;
+            return this;
+        }
+
         public Item build() {
-            return new Item(id, name, basePrice, price, categoryId, images, reviews, count, rating, description, discount, shop, isModerated, moderatedRejectReason, isPretendedToBeDeleted);
+            return new Item(id, name, basePrice, price, categoryId, images, reviews, count, rating, description, discount, shop, isModerated, moderatedRejectReason, isPretendedToBeDeleted, isModerateAccept);
         }
 
         public String toString() {

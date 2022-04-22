@@ -34,7 +34,7 @@ public class ReviewReadWriteDaoImpl extends ReadWriteDaoImpl<Review, Long> imple
     }
 
     @Override
-    public List<Review> getAllNotModeratedReviews() {
+    public List<Review> findAllUnModerated() {
         //выбрать из БД все  отзывы про вещь по её id, которые ещё не модерировались
         return em.createQuery("select r from Review r where r.isModerated = false ", Review.class)
                 .getResultList();
