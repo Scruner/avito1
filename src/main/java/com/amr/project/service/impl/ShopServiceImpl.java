@@ -5,6 +5,7 @@ import com.amr.project.model.entity.Shop;
 import com.amr.project.service.abstracts.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,5 +34,6 @@ public class ShopServiceImpl extends ReadWriteServiceImpl<Shop, Long> implements
     public List<Shop> findAllModerated() {return dao.findallModerated();}
 
     @Override
+    @Transactional(readOnly = true)
     public List<Shop> findAllUnModerated() {return dao.findallUnModerated();}
 }

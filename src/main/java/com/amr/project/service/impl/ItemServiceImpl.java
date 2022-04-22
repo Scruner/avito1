@@ -8,11 +8,9 @@ import com.amr.project.model.entity.Shop;
 import com.amr.project.service.abstracts.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,5 +57,11 @@ public class ItemServiceImpl extends ReadWriteServiceImpl<Item, Long> implements
             itemCategory.add(categoryDao.findById(item.getCategoryId()));
         }
         return itemCategory.stream().distinct().collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Item> findAllUnModerated() {
+        return itemDao.findAllUnModerated();
     }
 }

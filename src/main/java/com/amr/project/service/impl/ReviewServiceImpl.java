@@ -5,6 +5,7 @@ import com.amr.project.dao.abstracts.ReviewReadWriteDao;
 import com.amr.project.model.entity.Review;
 import com.amr.project.service.abstracts.ReviewService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,7 +41,8 @@ public class ReviewServiceImpl extends ReadWriteServiceImpl<Review, Long> implem
     }
 
     @Override
-    public List<Review> getAllNotModeratedReviews() {
-        return dao.getAllNotModeratedReviews();
+    @Transactional(readOnly = true)
+    public List<Review> findAllUnModerated() {
+        return dao.findAllUnModerated();
     }
 }

@@ -49,7 +49,7 @@ public class ReviewRestController {
     @PostMapping("/show_not_moderated")
     public ResponseEntity<List<ReviewDto>> getAllNotModeratedReviews() {
 
-        List<Review> reviewList = reviewService.getAllNotModeratedReviews();
+        List<Review> reviewList = reviewService.findAllUnModerated();
 
         return ResponseEntity.ok(reviewMapper.toDtoList(reviewList));
     }
