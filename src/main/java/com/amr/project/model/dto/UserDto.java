@@ -35,4 +35,5 @@ public class UserDto {
     private List<DiscountDto> discounts;
     private boolean isUsingTwoFactorAuth;
     private String secret;
+    private String qr_code;
 }
